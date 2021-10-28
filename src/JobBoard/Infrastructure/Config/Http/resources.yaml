@@ -1,0 +1,27 @@
+resources:
+    App\JobBoard\Domain\Model\Listing\Listing:
+      collectionOperations:
+        get:
+          filters: [ 'listing.search_filter' ]
+          output: App\JobBoard\Infrastructure\Http\FrontEnd\Listing\Resource\Listing
+        management_get:
+          method: GET
+          path: 'management/listings'
+      itemOperations:
+        management_get:
+          method: GET
+          path: 'management/listings/{id}'
+        get:
+          method: GET
+          output: App\JobBoard\Infrastructure\Http\FrontEnd\Listing\Resource\Listing
+    App\JobBoard\Domain\Model\Listing\Category:
+      itemOperations:
+        get:
+          method: GET
+          path: 'categories/{id}'
+        delete:
+          method: DELETE
+          path: 'management/categories/{id}'
+        patch:
+          method: PATCH
+          path: 'management/categories/{id}'

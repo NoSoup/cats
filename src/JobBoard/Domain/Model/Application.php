@@ -1,8 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Domain\Model;
+namespace App\JobBoard\Domain\Model;
 
+use App\JobBoard\Domain\Model\Listing\Listing;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -20,8 +21,8 @@ class Application
     #[ORM\ManyToOne(targetEntity: "ApplicationType")]
     private ApplicationType $type;
 
-    #[ORM\ManyToOne(targetEntity: "Candidate")]
-    private Candidate $applicant;
+    #[ORM\Embedded(class: "Candidate")]
+    private Candidate $candidate;
 
     #[ORM\Column(type: "datetime_immutable")]
     private \DateTimeImmutable $created;
@@ -40,16 +41,16 @@ class Application
      * @param Uuid $id
      * @param Listing $listing
      * @param ApplicationType $type
-     * @param Candidate $applicant
+     * @param Candidate $candidate
      * @param ApplicationStatus $status
      * @param \DateTimeImmutable $created
      * @param \DateTimeImmutable|null $updated
      */
-    private function __construct(Uuid $id, Listing $listing, ApplicationType $type, Candidate $applicant, ApplicationStatus $status, \DateTimeImmutable $created, ?\DateTimeImmutable $updated)
+    private function __construct(Uuid $id, Listing $listing, ApplicationType $type, Candidate $candidate, ApplicationStatus $status, \DateTimeImmutable $created, ?\DateTimeImmutable $updated)
     {
         $this->id = $id;
         $this->type = $type;
-        $this->applicant = $applicant;
+        $this->candidate = $candidate;
 
         $this->created = $created;
         $this->updated = $updated;
@@ -76,9 +77,9 @@ class Application
     /**
      * @return Candidate
      */
-    public function getApplicant(): Candidate
+    public function getCandidate(): Candidate
     {
-        return $this->applicant;
+        return $this->candidate;
     }
 
     /**
